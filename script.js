@@ -125,9 +125,6 @@ async function carregarSupervisores() {
   renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "Meta_Posit_Mix_Salty", data);
   renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "Meta_Posit_Mix_Foods", data);
 }
-
-
-
 /* ============================= */
 /* METAS GERAIS */
 /* ============================= */
@@ -157,5 +154,6 @@ carregarResumo();
 carregarSupervisores();
 
 carregarMetas();
+
 
 
