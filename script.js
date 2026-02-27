@@ -20,7 +20,6 @@ function classePercentual(valor) {
   return "percentual vermelho";
 }
 
-
 /* ============================= */
 /* FORMATA VALOR + PERCENTUAL */
 /* ============================= */
@@ -76,7 +75,6 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   let maiorPercentual = 0;
   let melhorNome = "";
 
-  // Descobrir melhor supervisor
   data.forEach(item => {
     const perc = parseFloat(item[percCampo]);
     if (perc > maiorPercentual) {
@@ -85,7 +83,6 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
     }
   });
 
-  // Renderizar lista
   data.forEach(item => {
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
@@ -122,38 +119,52 @@ async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
 
-  // PESO
   renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
   renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
 
-  // POSIT
   renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
   renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
 
-  // MIX
   renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "perc_Posit_Mix_Salty", data);
   renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "perc_Posit_Mix_Foods", data);
 }
 
 /* ============================= */
-/* METAS GERAIS */
+/* METAS GERAIS (AGORA ENTRAM NO RESUMO) */
 /* ============================= */
 
 async function carregarMetas() {
   const response = await fetch(metasURL);
   const data = await response.json();
-
   if (!data.length) return;
 
   const m = data[0];
 
-  document.getElementById("meta_peso_salty").innerText = m.meta_peso_salty;
-  document.getElementById("meta_peso_foods").innerText = m.meta_peso_foods;
-  document.getElementById("meta_posit_salty").innerText = m.meta_posit_salty;
-  document.getElementById("meta_posit_foods").innerText = m.meta_posit_foods;
-  document.getElementById("meta_mix_salty").innerText = m.meta_mix_salty;
-  document.getElementById("meta_mix_foods").innerText = m.meta_mix_foods;
-  document.getElementById("meta_pesquisa").innerText = m.meta_pesquisa;
+  inserirMetaNoCard("kg_salty", m.meta_peso_salty);
+  inserirMetaNoCard("kg_foods", m.meta_peso_foods);
+
+  inserirMetaNoCard("posit_salty", m.meta_posit_salty);
+  inserirMetaNoCard("posit_foods", m.meta_posit_foods);
+
+  inserirMetaNoCard("posit_mix_salty", m.meta_mix_salty);
+  inserirMetaNoCard("posit_mix_foods", m.meta_mix_foods);
+}
+
+/* ============================= */
+/* INSERE META DENTRO DO CARD */
+/* ============================= */
+
+function inserirMetaNoCard(elementId, metaValor) {
+  const elemento = document.getElementById(elementId);
+
+  if (!elemento || !metaValor) return;
+
+  elemento.innerHTML += `
+    <div class="meta-card-interna">
+      <span>Meta:</span>
+      <strong>${metaValor}</strong>
+    </div>
+  `;
 }
 
 /* ============================= */
@@ -163,15 +174,3 @@ async function carregarMetas() {
 carregarResumo();
 carregarSupervisores();
 carregarMetas();
-
-
-
-
-
-
-
-
-
-
-
-
