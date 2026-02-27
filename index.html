@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Estrelas Juntos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="top-header">
+  <h1>ESTRELAS JUNTOS</h1>
+  <img src="img/logo.png" class="logo-prov" alt="Provarejo">
+</header>
+
+  <main class="container">
+
+    <!-- ============================= -->
+    <!-- RESUMO GERAL -->
+    <!-- ============================= -->
+    <section class="resumo-grid">
+
+      <div class="card small">
+        <div class="icon">KG</div>
+        <h3>KG SALTY</h3>
+        <p id="kg_salty" class="valor">0</p>
+      </div>
+
+      <div class="card small">
+        <div class="icon">KG</div>
+        <h3>KG FOODS</h3>
+        <p id="kg_foods" class="valor">0</p>
+      </div>
+
+      <div class="card small">
+        <div class="icon">☺</div>
+        <h3>POSIT. SALTY</h3>
+        <p id="posit_salty" class="valor">0</p>
+      </div>
+
+      <div class="card small">
+        <div class="icon">☺</div>
+        <h3>POSIT. FOODS</h3>
+        <p id="posit_foods" class="valor">0</p>
+      </div>
+
+      <div class="card small">
+        <div class="icon">✷</div>
+        <h3>POSIT. MIX SALTY</h3>
+        <p id="posit_mix_salty" class="valor">0</p>
+      </div>
+
+      <div class="card small">
+        <div class="icon">✷</div>
+        <h3>POSIT. MIX FOODS</h3>
+        <p id="posit_mix_foods" class="valor">0</p>
+      </div>
+
+      <div class="card small destaque-loja">
+        <div class="icon">★</div>
+        <h3>RESULT. LOJA PERFEITA</h3>
+        <p id="resultado_loja" class="valor destaque">0</p>
+      </div>
+
+    </section>
+
+    <!-- ============================= -->
+    <!-- SUPERVISORES + META GERAL -->
+    <!-- ============================= -->
+    <section class="supervisores-grid">
+
+      <div class="card">
+        <div class="icon">KG</div>
+        <h3>SUPERVISORES PESO SALTY</h3>
+        <div id="peso_salty" class="lista-supervisor"></div>
+      </div>
+
+      <div class="card">
+        <div class="icon">KG</div>
+        <h3>SUPERVISORES PESO FOODS</h3>
+        <div id="peso_foods" class="lista-supervisor"></div>
+      </div>
+
+      <div class="card">
+        <div class="icon">☺</div>
+        <h3>SUPERVISORES POSIT SALTY</h3>
+        <div id="posit_salty_sup" class="lista-supervisor"></div>
+      </div>
+
+      <div class="card">
+        <div class="icon">☺</div>
+        <h3>SUPERVISORES POSIT FOODS</h3>
+        <div id="posit_foods_sup" class="lista-supervisor"></div>
+      </div>
+
+      <div class="card">
+        <div class="icon">✷</div>
+        <h3>SUPERVISORES POSIT MIX SALTY</h3>
+        <div id="posit_mix_salty_sup" class="lista-supervisor"></div>
+      </div>
+
+      <div class="card">
+        <div class="icon">✷</div>
+        <h3>SUPERVISORES POSIT MIX FOODS</h3>
+        <div id="posit_mix_foods_sup" class="lista-supervisor"></div>
+      </div>
+
+      <!-- META GERAL -->
+      <div class="card meta-geral-card">
+        <div class="icon">🎯</div>
+        <h3>TODAS AS METAS</h3>
+
+        <div class="meta-container">
+
+          <div class="meta-linha">
+            <span>PESO SALTY</span>
+            <span id="meta_peso_salty" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha">
+            <span>PESO FOODS</span>
+            <span id="meta_peso_foods" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha">
+            <span>POSIT.SALTY</span>
+            <span id="meta_posit_salty" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha">
+            <span>POSIT.FOODS</span>
+            <span id="meta_posit_foods" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha">
+            <span>MIX SALTY</span>
+            <span id="meta_mix_salty" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha">
+            <span>MIX FOODS</span>
+            <span id="meta_mix_foods" class="meta-valor">0</span>
+          </div>
+
+          <div class="meta-linha destaque-meta">
+            <span>PESQUISA</span>
+            <span id="meta_pesquisa" class="meta-valor">0</span>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

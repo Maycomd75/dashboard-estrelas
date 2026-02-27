@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root {
+  --resumo-largura: 1fr;
+  --resumo-altura: 65px;
+  --supervisor-altura: 100px;
+}
+
+body {
+  background: #f2f4f7;
+  padding: 15px;
+}
+
+/* ================= HEADER ================= */
+
+.top-header {
+  background: linear-gradient(90deg, #1c3f78, #244f96);
+  padding: 14px 25px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  color: white;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+
+  display: flex;
+  justify-content: space-between; /* separa os lados */
+  align-items: center;            /* alinha verticalmente */
+}
+
+.top-header h1 {
+  font-size: 30px;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.logo-prov {
+  height: 80px;
+  object-fit: contain;
+}
+
+/* ================= CONTAINER ================= */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ================= RESUMO ================= */
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(7, var(--resumo-largura));
+  gap: 5px;
+  width: 100%;
+}
+
+/* ================= SUPERVISORES ================= */
+
+.supervisores-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+/* ================= CARD BASE ================= */
+
+.card {
+  background: linear-gradient(145deg, #1f4a8c, #163b73);
+  border-radius: 12px;
+  padding: 18px 12px 12px 12px;
+  color: white;
+  position: relative;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+  min-height: var(--supervisor-altura);
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* ================= CARD RESUMO ================= */
+
+.card.small {
+  height: var(--resumo-altura);
+  padding: 4px 6px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card.small h3 {
+  font-size: 14px;
+  margin-bottom: 3px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.card.small p {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Loja Perfeita */
+
+.destaque-loja {
+  background: linear-gradient(135deg, #00c853, #009624);
+  box-shadow: 0 0 10px rgba(0,255,100,0.3);
+}
+
+/* ================= TÍTULOS ================= */
+
+.card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+/* ================= ÍCONE ================= */
+
+.icon {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ================= SUPERVISORES ================= */
+
+.linha-supervisor {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+.linha-supervisor:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.melhor {
+  background: linear-gradient(90deg, #00c853, #009624);
+  box-shadow: 0 0 8px rgba(0,255,100,0.25);
+}
+
+/* ================= PERCENTUAL ================= */
+
+.percentual {
+  margin-left: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.percentual.verde {
+  color: #00ff88;
+}
+
+.percentual.amarelo {
+  color: #ffd600;
+}
+
+.percentual.vermelho {
+  color: #ff4d4d;
+}
+
+/* ================= META GERAL ================= */
+
+.meta-geral-card {
+  grid-column: span 2;      
+  min-height: 120px;        
+  padding: 12px 15px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* CENTRALIZAR TÍTULO */
+
+.meta-geral-card h3 {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Grid interno das metas */
+
+.meta-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 25px;
+}
+
+.meta-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.meta-linha span:last-child {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+  .resumo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .supervisores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-geral-card {
+    grid-column: span 1;
+  }
+}
