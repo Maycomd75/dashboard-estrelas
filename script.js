@@ -177,35 +177,23 @@ async function carregarSupervisores() {
     renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
     renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
-    // Canal Organizado e Pequeno Varejo
-    renderCanal("canal_organizado", "Canal Organizado", "Meta_Canal_Organizado", "Real", "Percentual", data);
-    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta_Pequeno_Varejo", "Real", "Percentual", data);
-
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
   }
 }
 
 /* ============================= */
-/* CARREGAR METAS */
+/* CARREGAR LOJA PERFEITA */
 /* ============================= */
-async function carregarMetas() {
+async function carregarLojaPerfeita() {
   try {
-    const response = await fetch(metasURL);
+    const response = await fetch(lojaPerfeitaURL);
     const data = await response.json();
     if (!data.length) return;
 
-    const m = data[0];
-
-    const campos = [
-      "meta_peso_salty_card",
-      "meta_peso_foods_card",
-      "meta_posit_salty_card",
-      "meta_posit_foods_card",
-      "meta_mix_salty_card",
-      "meta_mix_foods_card"
-    ];
-
+      // Canal Organizado e Pequeno Varejo
+    renderCanal("canal_organizado", "Canal Organizado", "Meta_Canal_Organizado", "Real", "Percentual", data);
+    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta_Pequeno_Varejo", "Real", "Percentual", data);
     campos.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -215,7 +203,7 @@ async function carregarMetas() {
     });
 
   } catch (error) {
-    console.error("Erro ao carregar metas:", error);
+    console.error("Erro ao carregar lojaPerfeita:", error);
   }
 }
 
@@ -225,10 +213,11 @@ async function carregarMetas() {
 async function iniciarPainel() {
   await carregarResumo();
   await carregarSupervisores();
-  await carregarMetas();
+  await carregarLojaPerfeita();
 }
 
 iniciarPainel();
 
 /* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
+
