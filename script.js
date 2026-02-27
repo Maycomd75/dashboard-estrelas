@@ -149,39 +149,6 @@ async function carregarSupervisores() {
   }
 }
 
-/* ============================= */
-/* CARREGAR METAS */
-/* ============================= */
-
-async function carregarMetas() {
-  try {
-    const response = await fetch(metasURL);
-    const data = await response.json();
-    if (!data.length) return;
-
-    const m = data[0];
-
-    const campos = [
-      "meta_peso_salty_card",
-      "meta_peso_foods_card",
-      "meta_posit_salty_card",
-      "meta_posit_foods_card",
-      "meta_mix_salty_card",
-      "meta_mix_foods_card"
-    ];
-
-    campos.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        const campoPlanilha = id.replace("_card", "");
-        el.innerText = valorSeguro(m[campoPlanilha]);
-      }
-    });
-
-  } catch (error) {
-    console.error("Erro ao carregar metas:", error);
-  }
-}
 
 /* ============================= */
 /* INICIAR */
@@ -197,3 +164,4 @@ iniciarPainel();
 
 /* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
+
