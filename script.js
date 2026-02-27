@@ -52,7 +52,7 @@ function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
 }
 
 /* ============================= */
-/* RESUMO */
+/* CARREGAR RESUMO */
 /* ============================= */
 async function carregarResumo() {
   try {
@@ -69,7 +69,6 @@ async function carregarResumo() {
     atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
     atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
 
-    // Resultado Loja (sem barra)
     atualizarCard("resultado_loja", null, null, r.resultado_loja, null);
 
   } catch (error) {
@@ -96,9 +95,7 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
-    if (item.Nome === melhorNome) {
-      linha.classList.add("melhor");
-    }
+    if (item.Nome === melhorNome) linha.classList.add("melhor");
 
     linha.innerHTML = `
       <div style="width:100%">
@@ -114,7 +111,6 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
         </div>
       </div>
     `;
-
     container.appendChild(linha);
   });
 }
@@ -128,9 +124,7 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
   container.innerHTML = "";
 
-  // Filtra apenas o canal específico
   const dadosCanal = data.filter(item => item.Canal === canalNome);
-
   if (!dadosCanal.length) return;
 
   const melhor = dadosCanal.sort((a, b) => numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]))[0];
@@ -155,13 +149,12 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
         </div>
       </div>
     `;
-
     container.appendChild(linha);
   });
 }
 
 /* ============================= */
-/* CARREGAR SUPERVISORES */
+/* CARREGAR SUPERVISORES + CANAIS */
 /* ============================= */
 async function carregarSupervisores() {
   try {
@@ -177,23 +170,35 @@ async function carregarSupervisores() {
     renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
     renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
+    // Canal Organizado e Pequeno Varejo
+    renderCanal("canal_organizado", "Canal Organizado", "Meta", "Real", "Percentual", data);
+    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta", "Real", "Percentual", data);
+
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
   }
 }
 
 /* ============================= */
-/* CARREGAR LOJA PERFEITA */
+/* CARREGAR METAS */
 /* ============================= */
-async function carregarLojaPerfeita() {
+async function carregarMetas() {
   try {
-    const response = await fetch(lojaPerfeitaURL);
+    const response = await fetch(metasURL);
     const data = await response.json();
     if (!data.length) return;
 
-      // Canal Organizado e Pequeno Varejo
-    renderCanal("canal_organizado", "Canal Organizado", "Meta_Canal_Organizado", "Real", "Percentual", data);
-    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta_Pequeno_Varejo", "Real", "Percentual", data);
+    const m = data[0];
+
+    const campos = [
+      "meta_peso_salty_card",
+      "meta_peso_foods_card",
+      "meta_posit_salty_card",
+      "meta_posit_foods_card",
+      "meta_mix_salty_card",
+      "meta_mix_foods_card"
+    ];
+
     campos.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -203,21 +208,18 @@ async function carregarLojaPerfeita() {
     });
 
   } catch (error) {
-    console.error("Erro ao carregar lojaPerfeita:", error);
+    console.error("Erro ao carregar metas:", error);
   }
 }
 
 /* ============================= */
-/* INICIAR */
+/* INICIAR PAINEL */
 /* ============================= */
 async function iniciarPainel() {
   await carregarResumo();
   await carregarSupervisores();
-  await carregarLojaPerfeita();
+  await carregarMetas();
 }
 
 iniciarPainel();
-
-/* Atualiza a cada 5 minutos */
-setInterval(iniciarPainel, 300000);
-
+setInterval(iniciarPainel, 300000); // Atualiza a cada 5 minutos
