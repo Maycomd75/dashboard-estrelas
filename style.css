@@ -1,3 +1,5 @@
+/* ================= RESET ================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -9,37 +11,57 @@
   --resumo-largura: 1fr;
   --resumo-altura: 65px;
   --supervisor-altura: 100px;
+
+  --azul-1: #1c3f78;
+  --azul-2: #244f96;
+  --azul-card-1: #1f4a8c;
+  --azul-card-2: #163b73;
+
+  --verde-1: #00c853;
+  --verde-2: #009624;
+
+  --bg-claro: #f2f4f7;
 }
 
+/* ================= BODY ================= */
+
 body {
-  background: #f2f4f7;
-  padding: 15px;
+  background: linear-gradient(135deg, #e8edf5, #f5f7fa);
+  padding: 20px;
+  min-height: 100vh;
 }
 
 /* ================= HEADER ================= */
 
 .top-header {
-  background: linear-gradient(90deg, #1c3f78, #244f96);
-  padding: 14px 25px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--azul-1), var(--azul-2));
+  padding: 18px 30px;
+  border-radius: 14px;
+  margin-bottom: 18px;
   color: white;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 
   display: flex;
-  justify-content: space-between; /* separa os lados */
-  align-items: center;            /* alinha verticalmente */
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  backdrop-filter: blur(6px);
 }
 
 .top-header h1 {
-  font-size: 30px;
+  font-size: 28px;
   letter-spacing: 1px;
-  margin: 0;
+  font-weight: 600;
 }
 
 .logo-prov {
-  height: 80px;
+  height: 75px;
   object-fit: contain;
+  transition: 0.3s ease;
+}
+
+.logo-prov:hover {
+  transform: scale(1.05);
 }
 
 /* ================= CONTAINER ================= */
@@ -47,16 +69,15 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 /* ================= RESUMO ================= */
 
 .resumo-grid {
   display: grid;
-  grid-template-columns: repeat(7, var(--resumo-largura));
-  gap: 5px;
-  width: 100%;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
 /* ================= SUPERVISORES ================= */
@@ -64,57 +85,69 @@ body {
 .supervisores-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 12px;
 }
 
 /* ================= CARD BASE ================= */
 
 .card {
-  background: linear-gradient(145deg, #1f4a8c, #163b73);
-  border-radius: 12px;
-  padding: 18px 12px 12px 12px;
+  background: linear-gradient(145deg, var(--azul-card-1), var(--azul-card-2));
+  border-radius: 16px;
+  padding: 20px 15px;
   color: white;
   position: relative;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
   min-height: var(--supervisor-altura);
-  transition: 0.2s ease;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
+  top: -40%;
+  left: -40%;
+  transform: rotate(25deg);
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
 }
 
 /* ================= CARD RESUMO ================= */
 
 .card.small {
   height: var(--resumo-altura);
-  padding: 4px 6px;
-  border-radius: 8px;
+  padding: 6px 8px;
+  border-radius: 12px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
 .card.small h3 {
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 3px;
   font-weight: 600;
-  line-height: 1.1;
 }
 
 .card.small p {
   font-size: 22px;
   font-weight: 800;
-  line-height: 1;
 }
 
-/* Loja Perfeita */
+/* ================= LOJA PERFEITA ================= */
 
 .destaque-loja {
-  background: linear-gradient(135deg, #00c853, #009624);
-  box-shadow: 0 0 10px rgba(0,255,100,0.3);
+  background: linear-gradient(135deg, var(--verde-1), var(--verde-2));
+  box-shadow: 0 0 15px rgba(0,255,100,0.35);
 }
 
 /* ================= TÍTULOS ================= */
@@ -122,7 +155,7 @@ body {
 .card h3 {
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   opacity: 0.95;
 }
 
@@ -130,16 +163,18 @@ body {
 
 .icon {
   position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 22px;
-  height: 22px;
+  top: 10px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.2);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -150,18 +185,18 @@ body {
   justify-content: space-between;
   margin-bottom: 6px;
   font-size: 13px;
-  padding: 4px 6px;
-  border-radius: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
   transition: 0.2s ease;
 }
 
 .linha-supervisor:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.12);
 }
 
 .melhor {
-  background: linear-gradient(90deg, #00c853, #009624);
-  box-shadow: 0 0 8px rgba(0,255,100,0.25);
+  background: linear-gradient(90deg, var(--verde-1), var(--verde-2));
+  box-shadow: 0 0 10px rgba(0,255,100,0.3);
 }
 
 /* ================= PERCENTUAL ================= */
@@ -172,43 +207,27 @@ body {
   font-size: 14px;
 }
 
-.percentual.verde {
-  color: #00ff88;
-}
-
-.percentual.amarelo {
-  color: #ffd600;
-}
-
-.percentual.vermelho {
-  color: #ff4d4d;
-}
+.percentual.verde { color: #00ff88; }
+.percentual.amarelo { color: #ffd600; }
+.percentual.vermelho { color: #ff4d4d; }
 
 /* ================= META GERAL ================= */
 
 .meta-geral-card {
-  grid-column: span 2;      
-  min-height: 120px;        
-  padding: 12px 15px;
-
-  display: flex;
-  flex-direction: column;
+  grid-column: span 2;
+  min-height: 130px;
+  padding: 15px;
 }
-
-/* CENTRALIZAR TÍTULO */
 
 .meta-geral-card h3 {
   text-align: center;
-  width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-
-/* Grid interno das metas */
 
 .meta-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px 25px;
+  gap: 8px 30px;
 }
 
 .meta-linha {
@@ -224,7 +243,27 @@ body {
 
 /* ================= RESPONSIVO ================= */
 
+@media (max-width: 1024px) {
+  .supervisores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .resumo-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  .top-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
   .resumo-grid {
     grid-template-columns: repeat(2, 1fr);
   }
