@@ -9,12 +9,17 @@ const metasURL = `https://opensheet.elk.sh/${SHEET_ID}/Metas`;
 /* ============================= */
 
 function classePercentual(valor) {
-  const numero = parseFloat(valor);
+  if (!valor) return "percentual vermelho";
 
-  if (numero >= 80) return "percentual verde";
-  if (numero >= 60) return "percentual amarelo";
+  const numero = parseFloat(
+    valor.toString().replace("%", "").replace(",", ".")
+  );
+
+  if (numero >= 100) return "percentual verde";
+  if (numero >= 80) return "percentual amarelo";
   return "percentual vermelho";
 }
+
 
 /* ============================= */
 /* FORMATA VALOR + PERCENTUAL */
@@ -158,6 +163,7 @@ async function carregarMetas() {
 carregarResumo();
 carregarSupervisores();
 carregarMetas();
+
 
 
 
