@@ -122,17 +122,24 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
 /* ============================= */
 /* RENDER CANAL ORGANIZADO E PEQUENO VAREJO */
 /* ============================= */
-function renderCanal(containerId, canalCampo, metaCampo, realCampo, percCampo, data) {
+function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, data) {
   const container = document.getElementById(containerId);
   if (!container || !data.length) return;
 
   container.innerHTML = "";
 
-  const dadosCanal = data.filter(item => item.Canal && item.Canal.trim() !== "");
+  // Filtra apenas o canal específico
+  const dadosCanal = data.filter(item => item.Canal === canalNome);
+
+  if (!dadosCanal.length) return;
+
+  const melhor = dadosCanal.sort((a, b) => numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]))[0];
 
   dadosCanal.forEach(item => {
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
+
+    if (item.Nome === melhor.Nome) linha.classList.add("melhor");
 
     linha.innerHTML = `
       <div style="width:100%">
@@ -148,6 +155,7 @@ function renderCanal(containerId, canalCampo, metaCampo, realCampo, percCampo, d
         </div>
       </div>
     `;
+
     container.appendChild(linha);
   });
 }
@@ -170,8 +178,8 @@ async function carregarSupervisores() {
     renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
     // Canal Organizado e Pequeno Varejo
-    renderCanal("canal_organizado", "Canal_Organizado", "Meta_Canal_Organizado", "Canal_Organizado", "perc_Canal_Organizado", data);
-    renderCanal("pequeno_varejo", "Pequeno_Varejo", "Meta_Pequeno_Varejo", "Pequeno_Varejo", "perc_Pequeno_Varejo", data);
+    renderCanal("canal_organizado", "Canal Organizado", "Meta_Canal_Organizado", "Real", "Percentual", data);
+    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta_Pequeno_Varejo", "Real", "Percentual", data);
 
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
