@@ -117,14 +117,49 @@ async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
 
-  renderCard( "Peso_Salty", "Peso_Salty", "Meta_Peso_Salty", "perc_Peso_Salty", data);
-  renderCard("peso_foods", "Peso_Foods", "Meta_Peso_Foods", "perc_Peso_Foods", data);
+  renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
+  renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
+  renderCard("peso_mix", "Peso_Mix", "Meta_Mix", "perc_Peso_Mix", data);
+
   renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
   renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
-  renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "perc_Posit_Mix_Salty", data);
-  renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "perc_Posit_Mix_Foods", data);
-
+  renderCard("posit_mix_sup", "Posit_Mix", "Meta_Posit_Mix", "perc_Posit_Mix", data);
 }
+
+function renderCard(containerId, campoReal, campoMeta, campoPercentual, data) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  data.forEach(item => {
+
+    const nome = item.Nome || "Supervisor";
+    const real = Number(item[campoReal]) || 0;
+    const meta = Number(item[campoMeta]) || 0;
+    const percentual = item[campoPercentual] || "0%";
+
+    const card = document.createElement("div");
+    card.classList.add("supervisor-card");
+
+    card.innerHTML = `
+      <div class="supervisor-header">
+        <span class="supervisor-nome">${nome}</span>
+        <span class="supervisor-meta">Meta: ${formatarNumero(meta)}</span>
+      </div>
+
+      <div class="supervisor-body">
+        <span class="supervisor-real">Real: ${formatarNumero(real)}</span>
+        <span class="supervisor-percentual">${percentual}</span>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function formatarNumero(valor) {
+  return valor.toLocaleString("pt-BR");
+}
+
 
 /* ============================= */
 /* METAS GERAIS */
