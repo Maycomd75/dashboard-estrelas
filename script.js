@@ -58,27 +58,23 @@ function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
 /* RESUMO GERAL */
 /* ============================= */
 
-async function carregarResumo() {
+async function carregarSupervisores() {
   try {
-    const response = await fetch(resumoURL);
+    const response = await fetch(supervisoresURL);
     const data = await response.json();
     if (!data.length) return;
 
-    const r = data[0];
+    renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
+    renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
 
-    atualizarCard("kg_salty", "percent_kg_salty", "barra_kg_salty", r.kg_salty, r.perc_kg_salty);
-    atualizarCard("kg_foods", "percent_kg_foods", "barra_kg_foods", r.kg_foods, r.perc_kg_foods);
+    renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
+    renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
 
-    atualizarCard("posit_salty", "percent_posit_salty", "barra_posit_salty", r.posit_salty, r.perc_posit_salty);
-    atualizarCard("posit_foods", "percent_posit_foods", "barra_posit_foods", r.posit_foods, r.perc_posit_foods);
-
-    atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
-    atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
-
-    atualizarCard("resultado_loja", null, null, r.resultado_loja, r.perc_resultado_loja);
+    renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
+    renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
   } catch (error) {
-    console.error("Erro ao carregar resumo:", error);
+    console.error("Erro ao carregar supervisores:", error);
   }
 }
 
@@ -191,3 +187,4 @@ iniciarPainel();
 
 /* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
+
