@@ -117,14 +117,19 @@ async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
 
+  // PESO
   renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
   renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
-  renderCard("peso_mix", "Peso_Mix", "Meta_Mix", "perc_Peso_Mix", data);
 
-  renderCard("Posit_salty", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
-  renderCard("Posit_foods", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
-  renderCard("Posit_mix", "Posit_Mix", "Meta_Posit_Mix", "perc_Posit_Mix", data);
+  // POSIT
+  renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
+  renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
+
+  // MIX
+  renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "perc_Posit_Mix_Salty", data);
+  renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "perc_Posit_Mix_Foods", data);
 }
+
 /* ============================= */
 /* METAS GERAIS */
 /* ============================= */
@@ -153,6 +158,7 @@ async function carregarMetas() {
 carregarResumo();
 carregarSupervisores();
 carregarMetas();
+
 
 
 
