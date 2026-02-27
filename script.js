@@ -64,7 +64,7 @@ async function carregarResumo() {
 /* FUNÇÃO GENÉRICA PARA SUPERVISORES */
 /* ============================= */
 
-function renderCard(containerId, valorCampo, percCampo, data) {
+function renderCard(containerId, valorCampo, percCampo, metaCampo, data) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
 
@@ -90,7 +90,13 @@ function renderCard(containerId, valorCampo, percCampo, data) {
     }
 
     linha.innerHTML = `
-      <span>${item.Nome}</span>
+      <span>
+        ${item.Nome} 
+        <span class="meta-supervisor">
+          (Meta: ${item[metaCampo]})
+        </span>
+      </span>
+
       <span>
         ${item[valorCampo]}
         <span class="${classePercentual(item[percCampo])}">
@@ -103,6 +109,7 @@ function renderCard(containerId, valorCampo, percCampo, data) {
   });
 }
 
+
 /* ============================= */
 /* SUPERVISORES */
 /* ============================= */
@@ -111,12 +118,14 @@ async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
 
-renderCard("peso_salty", "Peso_Salty", "Meta_Peso_Salty", data);
-renderCard("peso_foods", "Peso_Foods", "Meta_Peso_Foods", data);
-renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", data);
-renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", data);
-renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", data);
-renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", data);
+  renderCard("peso_salty", "Peso_Salty", "Meta_Peso_Salty", "Meta_Peso_Salty", data);
+  renderCard("peso_foods", "Peso_Foods", "Meta_Peso_Foods", "Meta_Peso_Foods", data);
+  renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "Meta_Posit_Salty", data);
+  renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "Meta_Posit_Foods", data);
+  renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "Meta_Posit_Mix_Salty", data);
+  renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "Meta_Posit_Mix_Foods", data);
+}
+
 
 
 /* ============================= */
@@ -148,4 +157,5 @@ carregarResumo();
 carregarSupervisores();
 
 carregarMetas();
+
 
