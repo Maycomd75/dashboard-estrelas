@@ -119,7 +119,7 @@ async function carregarSupervisores() {
 
   renderCard("peso_salty", "Peso_Salty", "Meta_Peso_Salty", "Meta_Peso_Salty", data);
   renderCard("peso_foods", "Peso_Foods", "Meta_Peso_Foods", "Meta_Peso_Foods", data);
-  renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "Meta_Posit_Salty", data);
+  renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
   renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "Meta_Posit_Foods", data);
   renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "Meta_Posit_Mix_Salty", data);
   renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "Meta_Posit_Mix_Foods", data);
@@ -153,3 +153,4 @@ async function carregarMetas() {
 carregarResumo();
 carregarSupervisores();
 carregarMetas();
+
