@@ -5,70 +5,113 @@
   <title>Estrelas Juntos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="top-header">
+<header class="top-header">
   <h1>ESTRELAS JUNTOS</h1>
   <img src="img/logo.png" class="logo-prov" alt="Provarejo">
 </header>
 
-  <main class="container">
+<main class="container">
 
-    <!-- ============================= -->
-    <!-- RESUMO GERAL -->
-    <!-- ============================= -->
-    <section class="resumo-grid">
+<section class="resumo-grid">
 
-      <div class="card small">
-        <div class="icon">KG</div>
-        <h3>KG SALTY</h3>
-        <p id="kg_salty" class="valor">0</p>
-      </div>
+  <!-- KG SALTY -->
+  <div class="card small">
+    <div class="icon">KG</div>
+    <h3>KG SALTY</h3>
+    <p id="kg_salty" class="valor">0</p>
 
-      <div class="card small">
-        <div class="icon">KG</div>
-        <h3>KG FOODS</h3>
-        <p id="kg_foods" class="valor">0</p>
-      </div>
+    <p class="meta-info">
+      Meta: <span id="meta_peso_salty_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_kg_salty"></div>
+    </div>
+  </div>
 
-      <div class="card small">
-        <div class="icon">☺</div>
-        <h3>POSIT. SALTY</h3>
-        <p id="posit_salty" class="valor">0</p>
-      </div>
+  <!-- KG FOODS -->
+  <div class="card small">
+    <div class="icon">KG</div>
+    <h3>KG FOODS</h3>
+    <p id="kg_foods" class="valor">0</p>
 
-      <div class="card small">
-        <div class="icon">☺</div>
-        <h3>POSIT. FOODS</h3>
-        <p id="posit_foods" class="valor">0</p>
-      </div>
+    <p class="meta-info">
+      Meta: <span id="meta_peso_foods_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_kg_foods"></div>
+    </div>
+  </div>
 
-      <div class="card small">
-        <div class="icon">✷</div>
-        <h3>POSIT. MIX SALTY</h3>
-        <p id="posit_mix_salty" class="valor">0</p>
-      </div>
+  <!-- POSIT SALTY -->
+  <div class="card small">
+    <div class="icon">☺</div>
+    <h3>POSIT. SALTY</h3>
+    <p id="posit_salty" class="valor">0</p>
 
-      <div class="card small">
-        <div class="icon">✷</div>
-        <h3>POSIT. MIX FOODS</h3>
-        <p id="posit_mix_foods" class="valor">0</p>
-      </div>
+    <p class="meta-info">
+      Meta: <span id="meta_posit_salty_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_posit_salty"></div>
+    </div>
+  </div>
 
-      <div class="card small destaque-loja">
-        <div class="icon">★</div>
-        <h3>RESULT. LOJA PERFEITA</h3>
-        <p id="resultado_loja" class="valor destaque">0</p>
-      </div>
+  <!-- POSIT FOODS -->
+  <div class="card small">
+    <div class="icon">☺</div>
+    <h3>POSIT. FOODS</h3>
+    <p id="posit_foods" class="valor">0</p>
 
-    </section>
+    <p class="meta-info">
+      Meta: <span id="meta_posit_foods_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_posit_foods"></div>
+    </div>
+  </div>
+
+  <!-- MIX SALTY -->
+  <div class="card small">
+    <div class="icon">✷</div>
+    <h3>POSIT. MIX SALTY</h3>
+    <p id="posit_mix_salty" class="valor">0</p>
+
+    <p class="meta-info">
+      Meta: <span id="meta_mix_salty_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_mix_salty"></div>
+    </div>
+  </div>
+
+  <!-- MIX FOODS -->
+  <div class="card small">
+    <div class="icon">✷</div>
+    <h3>POSIT. MIX FOODS</h3>
+    <p id="posit_mix_foods" class="valor">0</p>
+
+    <p class="meta-info">
+      Meta: <span id="meta_mix_foods_card">0</span>
+    </p>
+    <div class="barra">
+      <div id="barra_mix_foods"></div>
+    </div>
+  </div>
+
+  <!-- RESULTADO LOJA -->
+  <div class="card small destaque-loja">
+    <div class="icon">★</div>
+    <h3>RESULT. LOJA PERFEITA</h3>
+    <p id="resultado_loja" class="valor destaque">0</p>
+  </div>
+
+</section>
+
 
     <!-- ============================= -->
     <!-- SUPERVISORES + META GERAL -->
