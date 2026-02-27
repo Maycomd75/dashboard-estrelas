@@ -32,7 +32,7 @@ function classePercentual(valor) {
 }
 
 /* ============================= */
-/* ATUALIZA CARD RESUMO */
+/* RESUMO */
 /* ============================= */
 
 function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
@@ -53,10 +53,6 @@ function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
     elBarra.className = classePercentual(percentual);
   }
 }
-
-/* ============================= */
-/* RESUMO */
-/* ============================= */
 
 async function carregarResumo() {
   try {
@@ -84,41 +80,41 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* RENDER GENÉRICO SUPERVISOR */
+/* RENDER PADRÃO */
 /* ============================= */
 
-function renderSupervisor(containerId, valorCampo, metaCampo, percCampo, data) {
+function renderLista(containerId, dataFiltrada) {
   const container = document.getElementById(containerId);
-  if (!container || !data.length) return;
+  if (!container) return;
 
   container.innerHTML = "";
 
-  const ordenado = [...data].sort((a, b) => {
-    return numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]);
+  const ordenado = [...dataFiltrada].sort((a, b) => {
+    return numeroSeguro(b.Percentual) - numeroSeguro(a.Percentual);
   });
 
-  const melhorNome = ordenado[0]?.Nome;
+  const melhor = ordenado[0]?.Supervisor;
 
   ordenado.forEach(item => {
 
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
-    if (item.Nome === melhorNome) {
+    if (item.Supervisor === melhor) {
       linha.classList.add("melhor");
     }
 
     linha.innerHTML = `
       <div style="width:100%">
         <div style="font-weight:600; margin-bottom:2px;">
-          ${valorSeguro(item.Nome, "Sem Nome")}
+          ${valorSeguro(item.Supervisor)}
         </div>
 
         <div style="display:flex; justify-content:space-between; font-size:12px;">
-          <span>Meta: ${valorSeguro(item[metaCampo])}</span>
-          <span>Real: ${valorSeguro(item[valorCampo])}</span>
-          <span class="${classePercentual(item[percCampo])}">
-            ${valorSeguro(item[percCampo], "0%")}
+          <span>Meta: ${valorSeguro(item.Meta)}</span>
+          <span>Real: ${valorSeguro(item.Real)}</span>
+          <span class="${classePercentual(item.Percentual)}">
+            ${valorSeguro(item.Percentual)}
           </span>
         </div>
       </div>
@@ -129,7 +125,7 @@ function renderSupervisor(containerId, valorCampo, metaCampo, percCampo, data) {
 }
 
 /* ============================= */
-/* SUPERVISORES */
+/* SUPERVISORES + CANAIS */
 /* ============================= */
 
 async function carregarSupervisores() {
@@ -138,20 +134,17 @@ async function carregarSupervisores() {
     const data = await response.json();
     if (!data.length) return;
 
-    renderSupervisor("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
-    renderSupervisor("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
+    // FILTRA POR CANAL
+    const canalOrganizado = data.filter(item => 
+      item.Canal?.trim() === "Canal Organizado"
+    );
 
-    renderSupervisor("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
-    renderSupervisor("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
+    const pequenoVarejo = data.filter(item => 
+      item.Canal?.trim() === "Pequeno Varejo"
+    );
 
-    renderSupervisor("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
-    renderSupervisor("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
-
-    /* NOVOS: CANAL ORGANIZADO E PEQUENO VAREJO */
-
-    renderSupervisor("canal_organizado", "Canal_Organizado", "Meta_Canal_Organizado", "perc_Canal_Organizado", data);
-
-    renderSupervisor("pequeno_varejo", "Pequeno_Varejo", "Meta_Pequeno_Varejo", "perc_Pequeno_Varejo", data);
+    renderLista("canal_organizado", canalOrganizado);
+    renderLista("pequeno_varejo", pequenoVarejo);
 
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
@@ -185,12 +178,6 @@ async function carregarMetas() {
       if (el) el.innerText = valorSeguro(m[id]);
     });
 
-    /* Atualiza metas do topo também */
-    ids.forEach(id => {
-      const elCard = document.getElementById(id + "_card");
-      if (elCard) elCard.innerText = valorSeguro(m[id]);
-    });
-
   } catch (error) {
     console.error("Erro ao carregar metas:", error);
   }
@@ -207,6 +194,4 @@ async function iniciarPainel() {
 }
 
 iniciarPainel();
-
-/* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
