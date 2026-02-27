@@ -5,7 +5,7 @@ const supervisoresURL = `https://opensheet.elk.sh/${SHEET_ID}/Supervisores`;
 const metasURL = `https://opensheet.elk.sh/${SHEET_ID}/Metas`;
 
 /* ============================= */
-/* FUNÇÕES AUXILIARES SEGURAS */
+/* FUNÇÕES SEGURAS */
 /* ============================= */
 
 function valorSeguro(valor, padrao = "0") {
@@ -83,24 +83,25 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* SUPERVISORES */
+/* SUPERVISORES (GENÉRICO) */
 /* ============================= */
 
 function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container || !data.length) return;
 
   container.innerHTML = "";
 
   // Ordena do maior para o menor percentual
-  data.sort((a, b) => {
+  const dadosOrdenados = [...data].sort((a, b) => {
     return numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]);
   });
 
-  let maiorPercentual = numeroSeguro(data[0][percCampo]);
-  let melhorNome = data[0].Nome;
+  const maiorPercentual = numeroSeguro(dadosOrdenados[0][percCampo]);
+  const melhorNome = dadosOrdenados[0].Nome;
 
-  data.forEach(item => {
+  dadosOrdenados.forEach(item => {
+
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
@@ -160,14 +161,19 @@ async function carregarMetas() {
 
     const m = data[0];
 
-    document.getElementById("meta_peso_salty_card").innerText = valorSeguro(m.meta_peso_salty);
-    document.getElementById("meta_peso_foods_card").innerText = valorSeguro(m.meta_peso_foods);
+    const campos = [
+      "meta_peso_salty_card",
+      "meta_peso_foods_card",
+      "meta_posit_salty_card",
+      "meta_posit_foods_card",
+      "meta_mix_salty_card",
+      "meta_mix_foods_card"
+    ];
 
-    document.getElementById("meta_posit_salty_card").innerText = valorSeguro(m.meta_posit_salty);
-    document.getElementById("meta_posit_foods_card").innerText = valorSeguro(m.meta_posit_foods);
-
-    document.getElementById("meta_mix_salty_card").innerText = valorSeguro(m.meta_mix_salty);
-    document.getElementById("meta_mix_foods_card").innerText = valorSeguro(m.meta_mix_foods);
+    campos.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = valorSeguro(m[id.replace("_card","")]);
+    });
 
   } catch (error) {
     console.error("Erro ao carregar metas:", error);
@@ -175,7 +181,7 @@ async function carregarMetas() {
 }
 
 /* ============================= */
-/* INICIAR PAINEL */
+/* INICIAR */
 /* ============================= */
 
 async function iniciarPainel() {
@@ -186,5 +192,5 @@ async function iniciarPainel() {
 
 iniciarPainel();
 
-/* Atualiza automaticamente a cada 5 minutos */
+/* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
