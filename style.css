@@ -10,7 +10,7 @@
 :root {
   --resumo-largura: 1fr;
   --resumo-altura: 65px;
-  --supervisor-altura: 100px;
+  --supervisor-altura: 80px;
 
   --azul-1: #1c3f78;
   --azul-2: #244f96;
@@ -276,3 +276,4 @@ body {
     grid-column: span 1;
   }
 }
+
