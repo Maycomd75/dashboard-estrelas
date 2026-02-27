@@ -10,7 +10,7 @@
 :root {
   --resumo-largura: 1fr;
   --resumo-altura: 65px;
-  --supervisor-altura: 60px; /* ↓ reduzido */
+  --supervisor-altura: 60px;
 
   --azul-1: #1c3f78;
   --azul-2: #244f96;
@@ -78,7 +78,7 @@ body {
 .supervisores-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px; /* ↓ menor */
+  gap: 10px;
 }
 
 /* ================= CARD BASE ================= */
@@ -86,7 +86,7 @@ body {
 .card {
   background: linear-gradient(145deg, var(--azul-card-1), var(--azul-card-2));
   border-radius: 14px;
-  padding: 12px 12px; /* ↓ reduzido */
+  padding: 12px 12px;
   color: white;
   position: relative;
   min-height: var(--supervisor-altura);
@@ -140,7 +140,7 @@ body {
   margin-bottom: 8px;
 }
 
-/* ================= SUPERVISORES (COMPACTO) ================= */
+/* ================= SUPERVISORES ================= */
 
 .linha-supervisor {
   display: flex;
@@ -159,8 +159,6 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* Nome + Meta */
-
 .supervisor-nome {
   font-size: 13px;
   font-weight: 600;
@@ -170,8 +168,6 @@ body {
   font-size: 11px;
   opacity: 0.85;
 }
-
-/* Valores */
 
 .supervisor-real {
   font-size: 12px;
@@ -183,8 +179,6 @@ body {
   font-size: 12px;
 }
 
-/* Cores */
-
 .percentual.verde { color: #00ff88; }
 .percentual.amarelo { color: #ffd600; }
 .percentual.vermelho { color: #ff4d4d; }
@@ -194,6 +188,29 @@ body {
 .melhor {
   background: linear-gradient(90deg, var(--verde-1), var(--verde-2));
   box-shadow: 0 0 8px rgba(0,255,100,0.3);
+}
+
+/* ================= META DENTRO DO CARD (NOVO) ================= */
+
+.meta-card-interna {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 11px;
+}
+
+.meta-card-interna span {
+  opacity: 0.9;
+}
+
+.meta-card-interna strong {
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* ================= META GERAL ================= */
