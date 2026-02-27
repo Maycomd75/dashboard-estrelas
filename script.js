@@ -117,7 +117,7 @@ async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
 
-  renderCard("peso_salty", "Peso_Salty", "Meta_Peso_Salty", "perc_Peso_Salty", data);
+  renderCard("Peso_Salty", "Meta_Peso_Salty", "perc_Peso_Salty", data);
   renderCard("peso_foods", "Peso_Foods", "Meta_Peso_Foods", "perc_Peso_Foods", data);
   renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
   renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
@@ -153,6 +153,7 @@ async function carregarMetas() {
 carregarResumo();
 carregarSupervisores();
 carregarMetas();
+
 
 
 
