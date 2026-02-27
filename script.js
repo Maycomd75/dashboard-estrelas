@@ -75,7 +75,8 @@ async function carregarResumo() {
     atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
     atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
 
-    atualizarCard("resultado_loja", null, null, r.resultado_loja, r.perc_resultado_loja);
+    const resultado = document.getElementById("resultado_loja");
+    if (resultado) resultado.innerText = valorSeguro(r.resultado_loja);
 
   } catch (error) {
     console.error("Erro ao carregar resumo:", error);
@@ -83,24 +84,22 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* SUPERVISORES (GENÉRICO) */
+/* RENDER GENÉRICO SUPERVISOR */
 /* ============================= */
 
-function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
+function renderSupervisor(containerId, valorCampo, metaCampo, percCampo, data) {
   const container = document.getElementById(containerId);
   if (!container || !data.length) return;
 
   container.innerHTML = "";
 
-  // Ordena do maior para o menor percentual
-  const dadosOrdenados = [...data].sort((a, b) => {
+  const ordenado = [...data].sort((a, b) => {
     return numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]);
   });
 
-  const maiorPercentual = numeroSeguro(dadosOrdenados[0][percCampo]);
-  const melhorNome = dadosOrdenados[0].Nome;
+  const melhorNome = ordenado[0]?.Nome;
 
-  dadosOrdenados.forEach(item => {
+  ordenado.forEach(item => {
 
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
@@ -116,8 +115,8 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
         </div>
 
         <div style="display:flex; justify-content:space-between; font-size:12px;">
-          <span>Meta: ${valorSeguro(item[metaCampo], "0")}</span>
-          <span>Real: ${valorSeguro(item[valorCampo], "0")}</span>
+          <span>Meta: ${valorSeguro(item[metaCampo])}</span>
+          <span>Real: ${valorSeguro(item[valorCampo])}</span>
           <span class="${classePercentual(item[percCampo])}">
             ${valorSeguro(item[percCampo], "0%")}
           </span>
@@ -129,20 +128,30 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   });
 }
 
+/* ============================= */
+/* SUPERVISORES */
+/* ============================= */
+
 async function carregarSupervisores() {
   try {
     const response = await fetch(supervisoresURL);
     const data = await response.json();
     if (!data.length) return;
 
-    renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
-    renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
+    renderSupervisor("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
+    renderSupervisor("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
 
-    renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
-    renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
+    renderSupervisor("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
+    renderSupervisor("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
 
-    renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
-    renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
+    renderSupervisor("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
+    renderSupervisor("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
+
+    /* NOVOS: CANAL ORGANIZADO E PEQUENO VAREJO */
+
+    renderSupervisor("canal_organizado", "Canal_Organizado", "Meta_Canal_Organizado", "perc_Canal_Organizado", data);
+
+    renderSupervisor("pequeno_varejo", "Pequeno_Varejo", "Meta_Pequeno_Varejo", "perc_Pequeno_Varejo", data);
 
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
@@ -161,18 +170,25 @@ async function carregarMetas() {
 
     const m = data[0];
 
-    const campos = [
-      "meta_peso_salty_card",
-      "meta_peso_foods_card",
-      "meta_posit_salty_card",
-      "meta_posit_foods_card",
-      "meta_mix_salty_card",
-      "meta_mix_foods_card"
+    const ids = [
+      "meta_peso_salty",
+      "meta_peso_foods",
+      "meta_posit_salty",
+      "meta_posit_foods",
+      "meta_mix_salty",
+      "meta_mix_foods",
+      "meta_pesquisa"
     ];
 
-    campos.forEach(id => {
+    ids.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.innerText = valorSeguro(m[id.replace("_card","")]);
+      if (el) el.innerText = valorSeguro(m[id]);
+    });
+
+    /* Atualiza metas do topo também */
+    ids.forEach(id => {
+      const elCard = document.getElementById(id + "_card");
+      if (elCard) elCard.innerText = valorSeguro(m[id]);
     });
 
   } catch (error) {
