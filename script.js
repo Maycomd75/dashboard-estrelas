@@ -21,16 +21,28 @@ function classePercentual(valor) {
 }
 
 /* ============================= */
-/* FORMATA VALOR + PERCENTUAL */
+/* ATUALIZA CARD RESUMO */
 /* ============================= */
 
-function formatarComPercentual(valor, percentual) {
-  return `
-    ${valor}
-    <span class="${classePercentual(percentual)}">
-      ${percentual}
-    </span>
-  `;
+function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
+  const elValor = document.getElementById(idValor);
+  const elPercent = document.getElementById(idPercentual);
+  const elBarra = document.getElementById(idBarra);
+
+  if (elValor) elValor.innerText = valor;
+
+  if (elPercent) {
+    elPercent.innerText = percentual;
+    elPercent.className = classePercentual(percentual);
+  }
+
+  if (elBarra) {
+    const numero = parseFloat(
+      percentual.toString().replace("%", "").replace(",", ".")
+    );
+    elBarra.style.width = numero + "%";
+    elBarra.className = classePercentual(percentual);
+  }
 }
 
 /* ============================= */
@@ -42,30 +54,20 @@ async function carregarResumo() {
   const data = await response.json();
   const r = data[0];
 
-  document.getElementById("kg_salty").innerHTML =
-    formatarComPercentual(r.kg_salty, r.perc_kg_salty);
+  atualizarCard("kg_salty", "percent_kg_salty", "barra_kg_salty", r.kg_salty, r.perc_kg_salty);
+  atualizarCard("kg_foods", "percent_kg_foods", "barra_kg_foods", r.kg_foods, r.perc_kg_foods);
 
-  document.getElementById("kg_foods").innerHTML =
-    formatarComPercentual(r.kg_foods, r.perc_kg_foods);
+  atualizarCard("posit_salty", "percent_posit_salty", "barra_posit_salty", r.posit_salty, r.perc_posit_salty);
+  atualizarCard("posit_foods", "percent_posit_foods", "barra_posit_foods", r.posit_foods, r.perc_posit_foods);
 
-  document.getElementById("posit_salty").innerHTML =
-    formatarComPercentual(r.posit_salty, r.perc_posit_salty);
+  atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
+  atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
 
-  document.getElementById("posit_foods").innerHTML =
-    formatarComPercentual(r.posit_foods, r.perc_posit_foods);
-
-  document.getElementById("posit_mix_salty").innerHTML =
-    formatarComPercentual(r.posit_mix_salty, r.perc_posit_mix_salty);
-
-  document.getElementById("posit_mix_foods").innerHTML =
-    formatarComPercentual(r.posit_mix_foods, r.perc_posit_mix_foods);
-
-  document.getElementById("resultado_loja").innerHTML =
-    formatarComPercentual(r.resultado_loja, r.perc_resultado_loja);
+  atualizarCard("resultado_loja", null, null, r.resultado_loja, r.perc_resultado_loja);
 }
 
 /* ============================= */
-/* RENDER SUPERVISORES */
+/* SUPERVISORES */
 /* ============================= */
 
 function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
@@ -111,10 +113,6 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   });
 }
 
-/* ============================= */
-/* CARREGAR SUPERVISORES */
-/* ============================= */
-
 async function carregarSupervisores() {
   const response = await fetch(supervisoresURL);
   const data = await response.json();
@@ -130,7 +128,7 @@ async function carregarSupervisores() {
 }
 
 /* ============================= */
-/* METAS GERAIS (AGORA ENTRAM NO RESUMO) */
+/* METAS (INSERE NO RESUMO) */
 /* ============================= */
 
 async function carregarMetas() {
@@ -140,35 +138,18 @@ async function carregarMetas() {
 
   const m = data[0];
 
-  inserirMetaNoCard("kg_salty", m.meta_peso_salty);
-  inserirMetaNoCard("kg_foods", m.meta_peso_foods);
+  document.getElementById("meta_peso_salty_card").innerText = m.meta_peso_salty;
+  document.getElementById("meta_peso_foods_card").innerText = m.meta_peso_foods;
 
-  inserirMetaNoCard("posit_salty", m.meta_posit_salty);
-  inserirMetaNoCard("posit_foods", m.meta_posit_foods);
+  document.getElementById("meta_posit_salty_card").innerText = m.meta_posit_salty;
+  document.getElementById("meta_posit_foods_card").innerText = m.meta_posit_foods;
 
-  inserirMetaNoCard("posit_mix_salty", m.meta_mix_salty);
-  inserirMetaNoCard("posit_mix_foods", m.meta_mix_foods);
+  document.getElementById("meta_mix_salty_card").innerText = m.meta_mix_salty;
+  document.getElementById("meta_mix_foods_card").innerText = m.meta_mix_foods;
 }
 
 /* ============================= */
-/* INSERE META DENTRO DO CARD */
-/* ============================= */
-
-function inserirMetaNoCard(elementId, metaValor) {
-  const elemento = document.getElementById(elementId);
-
-  if (!elemento || !metaValor) return;
-
-  elemento.innerHTML += `
-    <div class="meta-card-interna">
-      <span>Meta:</span>
-      <strong>${metaValor}</strong>
-    </div>
-  `;
-}
-
-/* ============================= */
-/* INICIAR SISTEMA */
+/* INICIAR */
 /* ============================= */
 
 carregarResumo();
