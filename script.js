@@ -35,25 +35,6 @@ function classePercentual(valor) {
 /* RESUMO */
 /* ============================= */
 
-function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
-  const elValor = document.getElementById(idValor);
-  const elPercent = document.getElementById(idPercentual);
-  const elBarra = document.getElementById(idBarra);
-
-  if (elValor) elValor.innerText = valorSeguro(valor);
-
-  if (elPercent) {
-    elPercent.innerText = valorSeguro(percentual, "0%");
-    elPercent.className = classePercentual(percentual);
-  }
-
-  if (elBarra) {
-    const numero = numeroSeguro(percentual);
-    elBarra.style.width = numero + "%";
-    elBarra.className = classePercentual(percentual);
-  }
-}
-
 async function carregarResumo() {
   try {
     const response = await fetch(resumoURL);
@@ -79,19 +60,38 @@ async function carregarResumo() {
   }
 }
 
+function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
+  const elValor = document.getElementById(idValor);
+  const elPercent = document.getElementById(idPercentual);
+  const elBarra = document.getElementById(idBarra);
+
+  if (elValor) elValor.innerText = valorSeguro(valor);
+
+  if (elPercent) {
+    elPercent.innerText = valorSeguro(percentual, "0%");
+    elPercent.className = classePercentual(percentual);
+  }
+
+  if (elBarra) {
+    const numero = numeroSeguro(percentual);
+    elBarra.style.width = numero + "%";
+    elBarra.className = classePercentual(percentual);
+  }
+}
+
 /* ============================= */
-/* RENDER PADRÃO */
+/* SUPERVISORES - CANAIS */
 /* ============================= */
 
-function renderLista(containerId, dataFiltrada) {
+function renderCanal(containerId, lista) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   container.innerHTML = "";
 
-  const ordenado = [...dataFiltrada].sort((a, b) => {
-    return numeroSeguro(b.Percentual) - numeroSeguro(a.Percentual);
-  });
+  const ordenado = [...lista].sort((a, b) =>
+    numeroSeguro(b.Percentual) - numeroSeguro(a.Percentual)
+  );
 
   const melhor = ordenado[0]?.Supervisor;
 
@@ -106,7 +106,7 @@ function renderLista(containerId, dataFiltrada) {
 
     linha.innerHTML = `
       <div style="width:100%">
-        <div style="font-weight:600; margin-bottom:2px;">
+        <div style="font-weight:600; margin-bottom:4px;">
           ${valorSeguro(item.Supervisor)}
         </div>
 
@@ -124,27 +124,22 @@ function renderLista(containerId, dataFiltrada) {
   });
 }
 
-/* ============================= */
-/* SUPERVISORES + CANAIS */
-/* ============================= */
-
 async function carregarSupervisores() {
   try {
     const response = await fetch(supervisoresURL);
     const data = await response.json();
     if (!data.length) return;
 
-    // FILTRA POR CANAL
-    const canalOrganizado = data.filter(item => 
-      item.Canal?.trim() === "Canal Organizado"
+    const canalOrganizado = data.filter(item =>
+      item.Canal?.trim().toLowerCase() === "canal organizado"
     );
 
-    const pequenoVarejo = data.filter(item => 
-      item.Canal?.trim() === "Pequeno Varejo"
+    const pequenoVarejo = data.filter(item =>
+      item.Canal?.trim().toLowerCase() === "pequeno varejo"
     );
 
-    renderLista("canal_organizado", canalOrganizado);
-    renderLista("pequeno_varejo", pequenoVarejo);
+    renderCanal("canal_organizado", canalOrganizado);
+    renderCanal("pequeno_varejo", pequenoVarejo);
 
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
