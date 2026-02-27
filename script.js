@@ -5,7 +5,7 @@ const supervisoresURL = `https://opensheet.elk.sh/${SHEET_ID}/Supervisores`;
 const metasURL = `https://opensheet.elk.sh/${SHEET_ID}/Metas`;
 
 /* ============================= */
-/* FUNÇÃO COR DO PERCENTUAL */
+/* COR DO PERCENTUAL */
 /* ============================= */
 
 function classePercentual(valor) {
@@ -61,10 +61,10 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* FUNÇÃO GENÉRICA PARA SUPERVISORES */
+/* RENDER SUPERVISORES */
 /* ============================= */
 
-function renderCard(containerId, valorCampo, percCampo, metaCampo, data) {
+function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
 
@@ -90,28 +90,27 @@ function renderCard(containerId, valorCampo, percCampo, metaCampo, data) {
     }
 
     linha.innerHTML = `
-      <span>
-        ${item.Nome} 
-        <span class="meta-supervisor">
-          (Meta: ${item[metaCampo]})
-        </span>
-      </span>
+      <div style="width:100%">
+        <div style="font-weight:600; margin-bottom:2px;">
+          ${item.Nome}
+        </div>
 
-      <span>
-        ${item[valorCampo]}
-        <span class="${classePercentual(item[percCampo])}">
-          ${item[percCampo]}
-        </span>
-      </span>
+        <div style="display:flex; justify-content:space-between; font-size:12px;">
+          <span>Meta: ${item[metaCampo]}</span>
+          <span>Real: ${item[valorCampo]}</span>
+          <span class="${classePercentual(item[percCampo])}">
+            ${item[percCampo]}
+          </span>
+        </div>
+      </div>
     `;
 
     container.appendChild(linha);
   });
 }
 
-
 /* ============================= */
-/* SUPERVISORES */
+/* CARREGAR SUPERVISORES */
 /* ============================= */
 
 async function carregarSupervisores() {
@@ -125,6 +124,7 @@ async function carregarSupervisores() {
   renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Posit_Mix_Salty", "Meta_Posit_Mix_Salty", data);
   renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Posit_Mix_Foods", "Meta_Posit_Mix_Foods", data);
 }
+
 /* ============================= */
 /* METAS GERAIS */
 /* ============================= */
@@ -147,13 +147,9 @@ async function carregarMetas() {
 }
 
 /* ============================= */
-/* INICIAR */
+/* INICIAR SISTEMA */
 /* ============================= */
 
 carregarResumo();
 carregarSupervisores();
-
 carregarMetas();
-
-
-
