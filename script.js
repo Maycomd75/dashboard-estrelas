@@ -32,38 +32,14 @@ function classePercentual(valor) {
 }
 
 /* ============================= */
-/* RESUMO */
+/* ATUALIZA CARD RESUMO */
 /* ============================= */
 
-async function carregarResumo() {
-  try {
-    const response = await fetch(resumoURL);
-    const data = await response.json();
-    if (!data.length) return;
-
-    const r = data[0];
-
-    atualizarCard("kg_salty", "percent_kg_salty", "barra_kg_salty", r.kg_salty, r.perc_kg_salty);
-    atualizarCard("kg_foods", "percent_kg_foods", "barra_kg_foods", r.kg_foods, r.perc_kg_foods);
-
-    atualizarCard("posit_salty", "percent_posit_salty", "barra_posit_salty", r.posit_salty, r.perc_posit_salty);
-    atualizarCard("posit_foods", "percent_posit_foods", "barra_posit_foods", r.posit_foods, r.perc_posit_foods);
-
-    atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
-    atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
-
-    const resultado = document.getElementById("resultado_loja");
-    if (resultado) resultado.innerText = valorSeguro(r.resultado_loja);
-
-  } catch (error) {
-    console.error("Erro ao carregar resumo:", error);
-  }
-}
-
 function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
+
   const elValor = document.getElementById(idValor);
-  const elPercent = document.getElementById(idPercentual);
-  const elBarra = document.getElementById(idBarra);
+  const elPercent = idPercentual ? document.getElementById(idPercentual) : null;
+  const elBarra = idBarra ? document.getElementById(idBarra) : null;
 
   if (elValor) elValor.innerText = valorSeguro(valor);
 
@@ -80,41 +56,68 @@ function atualizarCard(idValor, idPercentual, idBarra, valor, percentual) {
 }
 
 /* ============================= */
-/* SUPERVISORES - CANAIS */
+/* RESUMO */
 /* ============================= */
 
-function renderCanal(containerId, lista) {
+async function carregarResumo() {
+  try {
+    const response = await fetch(resumoURL);
+    const data = await response.json();
+    if (!data.length) return;
+
+    const r = data[0];
+
+    atualizarCard("kg_salty", "percent_kg_salty", "barra_kg_salty", r.kg_salty, r.perc_kg_salty);
+    atualizarCard("kg_foods", "percent_kg_foods", "barra_kg_foods", r.kg_foods, r.perc_kg_foods);
+    atualizarCard("posit_salty", "percent_posit_salty", "barra_posit_salty", r.posit_salty, r.perc_posit_salty);
+    atualizarCard("posit_foods", "percent_posit_foods", "barra_posit_foods", r.posit_foods, r.perc_posit_foods);
+    atualizarCard("posit_mix_salty", "percent_mix_salty", "barra_mix_salty", r.posit_mix_salty, r.perc_posit_mix_salty);
+    atualizarCard("posit_mix_foods", "percent_mix_foods", "barra_mix_foods", r.posit_mix_foods, r.perc_posit_mix_foods);
+
+    // Resultado Loja (sem barra)
+    atualizarCard("resultado_loja", null, null, r.resultado_loja, null);
+
+  } catch (error) {
+    console.error("Erro ao carregar resumo:", error);
+  }
+}
+
+/* ============================= */
+/* RENDER SUPERVISORES */
+/* ============================= */
+
+function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
+
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container || !data.length) return;
 
   container.innerHTML = "";
 
-  const ordenado = [...lista].sort((a, b) =>
-    numeroSeguro(b.Percentual) - numeroSeguro(a.Percentual)
-  );
+  const dadosOrdenados = [...data].sort((a, b) => {
+    return numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]);
+  });
 
-  const melhor = ordenado[0]?.Supervisor;
+  const melhorNome = dadosOrdenados[0]?.Nome;
 
-  ordenado.forEach(item => {
+  dadosOrdenados.forEach(item => {
 
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
-    if (item.Supervisor === melhor) {
+    if (item.Nome === melhorNome) {
       linha.classList.add("melhor");
     }
 
     linha.innerHTML = `
       <div style="width:100%">
         <div style="font-weight:600; margin-bottom:4px;">
-          ${valorSeguro(item.Supervisor)}
+          ${valorSeguro(item.Nome, "Sem Nome")}
         </div>
-
-        <div style="display:flex; justify-content:space-between; font-size:12px;">
-          <span>Meta: ${valorSeguro(item.Meta)}</span>
-          <span>Real: ${valorSeguro(item.Real)}</span>
-          <span class="${classePercentual(item.Percentual)}">
-            ${valorSeguro(item.Percentual)}
+        <div style="display:flex; justify-content:space-between; font-size:13px;">
+          <span>Meta: ${valorSeguro(item[metaCampo], "0")}</span>
+          <span>Real: ${valorSeguro(item[valorCampo], "0")}</span>
+          <span class="${classePercentual(item[percCampo])}">
+            ${valorSeguro(item[percCampo], "0%")}
           </span>
         </div>
       </div>
@@ -124,22 +127,22 @@ function renderCanal(containerId, lista) {
   });
 }
 
+/* ============================= */
+/* CARREGAR SUPERVISORES */
+/* ============================= */
+
 async function carregarSupervisores() {
   try {
     const response = await fetch(supervisoresURL);
     const data = await response.json();
     if (!data.length) return;
 
-    const canalOrganizado = data.filter(item =>
-      item.Canal?.trim().toLowerCase() === "canal organizado"
-    );
-
-    const pequenoVarejo = data.filter(item =>
-      item.Canal?.trim().toLowerCase() === "pequeno varejo"
-    );
-
-    renderCanal("canal_organizado", canalOrganizado);
-    renderCanal("pequeno_varejo", pequenoVarejo);
+    renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
+    renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
+    renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
+    renderCard("posit_foods_sup", "Posit_Foods", "Meta_Posit_Foods", "perc_Posit_Foods", data);
+    renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
+    renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
@@ -147,7 +150,7 @@ async function carregarSupervisores() {
 }
 
 /* ============================= */
-/* METAS */
+/* CARREGAR METAS */
 /* ============================= */
 
 async function carregarMetas() {
@@ -158,19 +161,21 @@ async function carregarMetas() {
 
     const m = data[0];
 
-    const ids = [
-      "meta_peso_salty",
-      "meta_peso_foods",
-      "meta_posit_salty",
-      "meta_posit_foods",
-      "meta_mix_salty",
-      "meta_mix_foods",
-      "meta_pesquisa"
+    const campos = [
+      "meta_peso_salty_card",
+      "meta_peso_foods_card",
+      "meta_posit_salty_card",
+      "meta_posit_foods_card",
+      "meta_mix_salty_card",
+      "meta_mix_foods_card"
     ];
 
-    ids.forEach(id => {
+    campos.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.innerText = valorSeguro(m[id]);
+      if (el) {
+        const campoPlanilha = id.replace("_card", "");
+        el.innerText = valorSeguro(m[campoPlanilha]);
+      }
     });
 
   } catch (error) {
@@ -189,4 +194,6 @@ async function iniciarPainel() {
 }
 
 iniciarPainel();
+
+/* Atualiza a cada 5 minutos */
 setInterval(iniciarPainel, 300000);
