@@ -35,7 +35,7 @@ body {
 
 .top-header {
   background: linear-gradient(90deg, var(--azul-1), var(--azul-2));
-  padding: 7px 18px;
+  padding: 10px 20px;
   border-radius: 14px;
   margin-bottom: 18px;
   color: white;
@@ -44,16 +44,17 @@ body {
   justify-content: space-between;
   align-items: center;
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
 }
 
 .top-header h1 {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 600;
+  margin: 0;
 }
 
 .logo-prov {
-  height: 50px;
+  height: 48px;
   object-fit: contain;
 }
 
@@ -262,6 +263,7 @@ html, body {
 .container {
   max-width: 100%;
 }
+
 
 
 
