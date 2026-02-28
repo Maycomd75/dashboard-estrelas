@@ -115,9 +115,8 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
     container.appendChild(linha);
   });
 }
-
 /* ============================= */
-/* RENDER CANAIS (ATUALIZADO) */
+/* RENDER CANAIS (VERSÃO FINAL) */
 /* ============================= */
 function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -125,13 +124,15 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
   container.innerHTML = "";
 
-  const dadosCanal = data.filter(item =>
-    (item.Canal || "").toLowerCase().trim() === canalNome.toLowerCase().trim()
-  );
+  // FILTRA PELO NOME DO CANAL (SEGURO)
+  const dadosCanal = data.filter(item => {
+    const canalPlanilha = (item.Canal || item.canal || "").toString().toLowerCase().trim();
+    return canalPlanilha === canalNome.toLowerCase().trim();
+  });
 
   if (!dadosCanal.length) return;
 
-  // Calcula percentual automático
+  // CALCULA PERCENTUAL SE NÃO EXISTIR
   dadosCanal.forEach(item => {
     const meta = numeroSeguro(item[metaCampo]);
     const real = numeroSeguro(item[realCampo]);
@@ -143,6 +144,7 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
     }
   });
 
+  // ORDENA DO MAIOR PARA O MENOR
   const ordenado = [...dadosCanal].sort((a, b) =>
     numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo])
   );
@@ -164,15 +166,15 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
         </div>
 
         <div style="display:flex; justify-content:space-between; font-size:13px;">
-          <span>Meta: ${valorSeguro(item[metaCampo], "0")}</span>
-          <span>Real: ${valorSeguro(item[realCampo], "0")}</span>
+          <span><strong>Meta:</strong> ${valorSeguro(item[metaCampo], "0")}</span>
+          <span><strong>Real:</strong> ${valorSeguro(item[realCampo], "0")}</span>
           <span class="${classePercentual(item[percCampo])}">
             ${valorSeguro(item[percCampo], "0%")}
           </span>
         </div>
 
         <div class="barra" style="margin-top:6px;">
-          <div class="${classePercentual(item[percCampo])}"
+          <div class="barra-preenchida ${classePercentual(item[percCampo])}"
                style="width:${percentualNumero}%;">
           </div>
         </div>
@@ -251,3 +253,4 @@ async function iniciarPainel() {
 
 iniciarPainel();
 setInterval(iniciarPainel, 300000);
+
