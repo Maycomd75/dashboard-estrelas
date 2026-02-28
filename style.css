@@ -9,7 +9,7 @@
 
 :root {
   --resumo-largura: 1fr;
-  --resumo-altura: 110px;
+  --resumo-altura: 125px;
   --supervisor-altura: 70px;
 
   --azul-1: #1c3f78;
@@ -48,12 +48,12 @@ body {
 }
 
 .top-header h1 {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 600;
 }
 
 .logo-prov {
-  height: 70px;
+  height: 90px;
   object-fit: contain;
 }
 
@@ -262,6 +262,7 @@ html, body {
 .container {
   max-width: 100%;
 }
+
 
 
 
