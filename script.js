@@ -291,4 +291,5 @@ async function iniciarPainel() {
 }
 
 iniciarPainel();
-setInterval(iniciarPainel, 300000);
+setInterval(iniciarPainel, 60000);
+
