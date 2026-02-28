@@ -12,7 +12,7 @@
 
   /* 🔥 Alturas reduzidas */
   --resumo-altura: 90px;
-  --supervisor-altura: 75px;
+  --supervisor-altura: 89px;
 
   --azul-1: #1c3f78;
   --azul-2: #244f96;
@@ -255,4 +255,5 @@ body {
 html, body {
   overflow-x: hidden;
 }
+
 
