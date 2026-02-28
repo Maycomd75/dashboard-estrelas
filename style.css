@@ -74,8 +74,8 @@ body {
 
 .resumo-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 🔥 4 cards fixos */
-  gap: 12px; /* leve aumento para respirar melhor */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
 }
 
 /* ================= SUPERVISORES GRID ================= */
@@ -255,6 +255,7 @@ body {
 html, body {
   overflow-x: hidden;
 }
+
 
 
 
