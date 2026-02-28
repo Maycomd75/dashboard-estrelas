@@ -11,7 +11,7 @@
   --resumo-largura: 1fr;
 
   /* 🔥 Alturas reduzidas */
-  --resumo-altura: 55px;
+  --resumo-altura: 45px;
   --supervisor-altura: 185px;
 
   --azul-1: #1c3f78;
@@ -255,6 +255,7 @@ body {
 html, body {
   overflow-x: hidden;
 }
+
 
 
 
