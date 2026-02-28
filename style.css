@@ -9,8 +9,8 @@
 
 :root {
   --resumo-largura: 1fr;
-  --resumo-altura: 130px;
-  --supervisor-altura: 90px;
+  --resumo-altura: 125px;
+  --supervisor-altura: 70px;
 
   --azul-1: #1c3f78;
   --azul-2: #244f96;
@@ -262,3 +262,4 @@ html, body {
 .container {
   max-width: 100%;
 }
+
