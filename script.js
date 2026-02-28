@@ -4,6 +4,10 @@ const resumoURL = `https://opensheet.elk.sh/${SHEET_ID}/Resumo`;
 const supervisoresURL = `https://opensheet.elk.sh/${SHEET_ID}/Supervisores`;
 const metasURL = `https://opensheet.elk.sh/${SHEET_ID}/Metas`;
 
+// 🔥 NOVAS ABAS SEPARADAS
+const canalOrganizadoURL = `https://opensheet.elk.sh/${SHEET_ID}/Canal Organizado`;
+const pequenoVarejoURL = `https://opensheet.elk.sh/${SHEET_ID}/Pequeno Varejo`;
+
 /* ============================= */
 /* FUNÇÕES SEGURAS */
 /* ============================= */
@@ -77,7 +81,7 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* RENDER SUPERVISORES PADRÃO */
+/* RENDER PADRÃO */
 /* ============================= */
 function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -117,7 +121,7 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
 }
 
 /* ============================= */
-/* RENDER CANAIS (VERSÃO FINAL SEGURA) */
+/* RENDER CANAL */
 /* ============================= */
 function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -125,24 +129,25 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
   container.innerHTML = "";
 
-  // IDENTIFICA AUTOMATICAMENTE A COLUNA DO CANAL
-  const chaveCanal = Object.keys(data[0]).find(k =>
-    k.toLowerCase().includes("canal")
-  );
+  let dadosCanal = data;
 
-  if (!chaveCanal) {
-    console.warn("Coluna de Canal não encontrada.");
-    return;
+  // Só filtra se for necessário
+  if (canalNome && canalNome !== "") {
+    const chaveCanal = Object.keys(data[0]).find(k =>
+      k.toLowerCase().includes("canal")
+    );
+
+    if (chaveCanal) {
+      dadosCanal = data.filter(item => {
+        const canalPlanilha = (item[chaveCanal] || "")
+          .toString()
+          .toLowerCase()
+          .trim();
+
+        return canalPlanilha === canalNome.toLowerCase().trim();
+      });
+    }
   }
-
-  const dadosCanal = data.filter(item => {
-    const canalPlanilha = (item[chaveCanal] || "")
-      .toString()
-      .toLowerCase()
-      .trim();
-
-    return canalPlanilha === canalNome.toLowerCase().trim();
-  });
 
   if (!dadosCanal.length) return;
 
@@ -198,7 +203,7 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 }
 
 /* ============================= */
-/* CARREGAR SUPERVISORES + CANAIS */
+/* CARREGAR SUPERVISORES */
 /* ============================= */
 async function carregarSupervisores() {
   try {
@@ -213,11 +218,32 @@ async function carregarSupervisores() {
     renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
     renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
-    renderCanal("canal_organizado", "Canal Organizado", "Meta", "Real", "Percentual", data);
-    renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta", "Real", "Percentual", data);
-
   } catch (error) {
     console.error("Erro ao carregar supervisores:", error);
+  }
+}
+
+/* ============================= */
+/* CARREGAR CANAIS SEPARADOS */
+/* ============================= */
+async function carregarCanais() {
+  try {
+    const responseOrganizado = await fetch(canalOrganizadoURL);
+    const dataOrganizado = await responseOrganizado.json();
+
+    if (dataOrganizado.length) {
+      renderCanal("canal_organizado", "", "Meta", "Real", "Percentual", dataOrganizado);
+    }
+
+    const responseVarejo = await fetch(pequenoVarejoURL);
+    const dataVarejo = await responseVarejo.json();
+
+    if (dataVarejo.length) {
+      renderCanal("pequeno_varejo", "", "Meta", "Real", "Percentual", dataVarejo);
+    }
+
+  } catch (error) {
+    console.error("Erro ao carregar canais:", error);
   }
 }
 
@@ -260,6 +286,7 @@ async function carregarMetas() {
 async function iniciarPainel() {
   await carregarResumo();
   await carregarSupervisores();
+  await carregarCanais(); // 🔥 NOVO
   await carregarMetas();
 }
 
