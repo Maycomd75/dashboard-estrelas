@@ -77,7 +77,7 @@ async function carregarResumo() {
 }
 
 /* ============================= */
-/* RENDER SUPERVISORES */
+/* RENDER SUPERVISORES PADRÃO */
 /* ============================= */
 function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -85,13 +85,13 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
 
   container.innerHTML = "";
 
-  const dadosOrdenados = [...data].sort((a, b) => {
-    return numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]);
-  });
+  const ordenado = [...data].sort((a, b) =>
+    numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo])
+  );
 
-  const melhorNome = dadosOrdenados[0]?.Nome;
+  const melhorNome = ordenado[0]?.Nome;
 
-  dadosOrdenados.forEach(item => {
+  ordenado.forEach(item => {
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
@@ -111,12 +111,13 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
         </div>
       </div>
     `;
+
     container.appendChild(linha);
   });
 }
 
 /* ============================= */
-/* RENDER CANAL ORGANIZADO E PEQUENO VAREJO */
+/* RENDER CANAIS (ATUALIZADO) */
 /* ============================= */
 function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -124,22 +125,44 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
   container.innerHTML = "";
 
-  const dadosCanal = data.filter(item => item.Canal === canalNome);
+  const dadosCanal = data.filter(item =>
+    (item.Canal || "").toLowerCase().trim() === canalNome.toLowerCase().trim()
+  );
+
   if (!dadosCanal.length) return;
 
-  const melhor = dadosCanal.sort((a, b) => numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo]))[0];
-
+  // Calcula percentual automático
   dadosCanal.forEach(item => {
+    const meta = numeroSeguro(item[metaCampo]);
+    const real = numeroSeguro(item[realCampo]);
+
+    if (!item[percCampo] || item[percCampo] === "") {
+      item[percCampo] = meta > 0
+        ? ((real / meta) * 100).toFixed(1) + "%"
+        : "0%";
+    }
+  });
+
+  const ordenado = [...dadosCanal].sort((a, b) =>
+    numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo])
+  );
+
+  const melhorNome = ordenado[0]?.Nome;
+
+  ordenado.forEach(item => {
     const linha = document.createElement("div");
     linha.classList.add("linha-supervisor");
 
-    if (item.Nome === melhor.Nome) linha.classList.add("melhor");
+    if (item.Nome === melhorNome) linha.classList.add("melhor");
+
+    const percentualNumero = numeroSeguro(item[percCampo]);
 
     linha.innerHTML = `
       <div style="width:100%">
         <div style="font-weight:600; margin-bottom:4px;">
           ${valorSeguro(item.Nome, "Sem Nome")}
         </div>
+
         <div style="display:flex; justify-content:space-between; font-size:13px;">
           <span>Meta: ${valorSeguro(item[metaCampo], "0")}</span>
           <span>Real: ${valorSeguro(item[realCampo], "0")}</span>
@@ -147,8 +170,15 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
             ${valorSeguro(item[percCampo], "0%")}
           </span>
         </div>
+
+        <div class="barra" style="margin-top:6px;">
+          <div class="${classePercentual(item[percCampo])}"
+               style="width:${percentualNumero}%;">
+          </div>
+        </div>
       </div>
     `;
+
     container.appendChild(linha);
   });
 }
@@ -162,7 +192,6 @@ async function carregarSupervisores() {
     const data = await response.json();
     if (!data.length) return;
 
-    // Supervisores normais
     renderCard("peso_salty", "Peso_Salty", "Meta_Salty", "perc_Peso_Salty", data);
     renderCard("peso_foods", "Peso_Foods", "Meta_Foods", "perc_Peso_Foods", data);
     renderCard("posit_salty_sup", "Posit_Salty", "Meta_Posit_Salty", "perc_Posit_Salty", data);
@@ -170,7 +199,6 @@ async function carregarSupervisores() {
     renderCard("posit_mix_salty_sup", "Posit_Mix_Salty", "Meta_Mix_Salty", "perc_Posit_Mix_Salty", data);
     renderCard("posit_mix_foods_sup", "Posit_Mix_Foods", "Meta_Mix_Foods", "perc_Posit_Mix_Foods", data);
 
-    // Canal Organizado e Pequeno Varejo
     renderCanal("canal_organizado", "Canal Organizado", "Meta", "Real", "Percentual", data);
     renderCanal("pequeno_varejo", "Pequeno Varejo", "Meta", "Real", "Percentual", data);
 
@@ -222,4 +250,4 @@ async function iniciarPainel() {
 }
 
 iniciarPainel();
-setInterval(iniciarPainel, 300000); // Atualiza a cada 5 minutos
+setInterval(iniciarPainel, 300000);
