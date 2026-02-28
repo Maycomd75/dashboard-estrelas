@@ -8,11 +8,8 @@
 }
 
 :root {
-  --resumo-largura: 1fr;
-
-  /* 🔥 Alturas reduzidas */
-  --resumo-altura: 90px;
-  --supervisor-altura: 60px;
+  --resumo-altura: 80px;        /* 🔥 menor */
+  --supervisor-altura: 55px;    /* 🔥 menor */
 
   --azul-1: #1c3f78;
   --azul-2: #244f96;
@@ -21,95 +18,106 @@
 
   --verde-1: #00c853;
   --verde-2: #009624;
+}
 
-  --bg-claro: #f2f4f7;
+/* ================= VIEWPORT CONTROL ================= */
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* 🔥 remove scroll */
 }
 
 /* ================= BODY ================= */
 
 body {
   background: linear-gradient(135deg, #e8edf5, #f5f7fa);
-  padding: 16px; /* 🔥 reduzido */
-  min-height: 100vh;
-  line-height: 1.2; /* 🔥 menos espaço vertical */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
 /* ================= HEADER ================= */
 
 .top-header {
   background: linear-gradient(90deg, var(--azul-1), var(--azul-2));
-  padding: 8px 18px; /* 🔥 menor */
+  padding: 6px 16px;
   border-radius: 14px;
-  margin-bottom: 10px; /* 🔥 menor */
+  margin-bottom: 8px;
   color: white;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  flex-shrink: 0;
 }
 
 .top-header h1 {
-  font-size: 22px; /* 🔥 levemente menor */
+  font-size: 20px;
   font-weight: 600;
 }
 
 .logo-prov {
-  height: 42px; /* 🔥 reduzido */
+  height: 38px;
   object-fit: contain;
 }
 
 /* ================= CONTAINER ================= */
 
 .container {
+  flex: 1; /* 🔥 ocupa restante da tela */
   display: flex;
   flex-direction: column;
-  gap: 8px; /* 🔥 menor */
-  width: 100%;
-  max-width: 100%;
+  gap: 6px;
+  min-height: 0;
 }
 
 /* ================= RESUMO ================= */
 
 .resumo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px; /* 🔥 menor */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 /* ================= SUPERVISORES GRID ================= */
 
 .supervisores-grid {
+  flex: 1; /* 🔥 ocupa restante da tela */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 8px; /* 🔥 menor */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 6px;
+  min-height: 0;
 }
 
 /* ================= CARD BASE ================= */
 
 .card {
   background: linear-gradient(145deg, var(--azul-card-1), var(--azul-card-2));
-  border-radius: 14px;
-  padding: 6px; /* 🔥 menor */
+  border-radius: 12px;
+  padding: 6px;
   color: white;
-  position: relative;
   min-height: var(--supervisor-altura);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
   transition: all 0.2s ease;
-  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 .card h3 {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  margin-bottom: 6px; /* 🔥 menor */
+  margin-bottom: 4px;
   text-align: center;
 }
 
@@ -117,30 +125,22 @@ body {
 
 .card.small {
   height: var(--resumo-altura);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-.card.small h3 {
-  font-size: 11px;
-  margin-bottom: 4px; /* 🔥 menor */
-}
-
 .card.small .valor-meta {
-  font-size: 11px;
+  font-size: 10px;
   opacity: 0.85;
 }
 
 .card.small .valor-real {
-  font-size: 20px; /* 🔥 levemente menor */
+  font-size: 18px;
   font-weight: 800;
 }
 
 .card.small .valor-percentual {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -150,10 +150,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3px 5px; /* 🔥 menor */
-  font-size: 10.5px; /* 🔥 menor */
+  padding: 2px 4px;
+  font-size: 10px;
   border-radius: 6px;
-  transition: 0.2s ease;
 }
 
 .linha-supervisor:hover {
@@ -172,52 +171,35 @@ body {
 .percentual.amarelo { color: #ffd600; }
 .percentual.vermelho { color: #ff4d4d; }
 
-/* ================= MELHOR SUPERVISOR ================= */
-
-.melhor {
-  background: linear-gradient(135deg, var(--verde-1), var(--verde-2));
-  box-shadow: 0 0 10px rgba(0,255,100,0.35);
-}
-
 /* ================= CARD VERDE ================= */
 
 .card-verde {
   background: linear-gradient(145deg, var(--verde-1), var(--verde-2));
-  border-radius: 14px;
-  padding: 8px; /* 🔥 menor */
+  border-radius: 12px;
+  padding: 6px;
   color: white;
   min-height: var(--supervisor-altura);
 
-  box-shadow: 0 4px 14px rgba(0,200,83,0.35);
+  box-shadow: 0 4px 12px rgba(0,200,83,0.35);
   transition: all 0.2s ease;
 }
 
 .card-verde:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,150,36,0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,150,36,0.45);
 }
 
 .card-verde h3 {
   text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 6px; /* 🔥 menor */
+  font-size: 12px;
+  margin-bottom: 4px;
 }
 
 .card-verde .meta-conteudo {
   display: flex;
   flex-direction: column;
-  gap: 4px; /* 🔥 menor */
-  font-size: 11px;
-}
-
-.card-verde .meta-conteudo p {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card-verde .meta-conteudo span {
-  font-weight: 700;
+  gap: 3px;
+  font-size: 10px;
 }
 
 /* ================= RESPONSIVO ================= */
@@ -233,8 +215,13 @@ body {
 }
 
 @media (max-width: 768px) {
+
+  html, body {
+    overflow: auto; /* 🔥 permite scroll só no mobile */
+  }
+
   body {
-    padding: 10px;
+    padding: 8px;
   }
 
   .top-header {
@@ -250,8 +237,4 @@ body {
   .supervisores-grid {
     grid-template-columns: 1fr;
   }
-}
-
-html, body {
-  overflow-x: hidden;
 }
