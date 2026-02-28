@@ -115,8 +115,9 @@ function renderCard(containerId, valorCampo, metaCampo, percCampo, data) {
     container.appendChild(linha);
   });
 }
+
 /* ============================= */
-/* RENDER CANAIS (VERSÃO FINAL) */
+/* RENDER CANAIS (VERSÃO FINAL SEGURA) */
 /* ============================= */
 function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, data) {
   const container = document.getElementById(containerId);
@@ -124,15 +125,27 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
   container.innerHTML = "";
 
-  // FILTRA PELO NOME DO CANAL (SEGURO)
+  // IDENTIFICA AUTOMATICAMENTE A COLUNA DO CANAL
+  const chaveCanal = Object.keys(data[0]).find(k =>
+    k.toLowerCase().includes("canal")
+  );
+
+  if (!chaveCanal) {
+    console.warn("Coluna de Canal não encontrada.");
+    return;
+  }
+
   const dadosCanal = data.filter(item => {
-    const canalPlanilha = (item.Canal || item.canal || "").toString().toLowerCase().trim();
+    const canalPlanilha = (item[chaveCanal] || "")
+      .toString()
+      .toLowerCase()
+      .trim();
+
     return canalPlanilha === canalNome.toLowerCase().trim();
   });
 
   if (!dadosCanal.length) return;
 
-  // CALCULA PERCENTUAL SE NÃO EXISTIR
   dadosCanal.forEach(item => {
     const meta = numeroSeguro(item[metaCampo]);
     const real = numeroSeguro(item[realCampo]);
@@ -144,7 +157,6 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
     }
   });
 
-  // ORDENA DO MAIOR PARA O MENOR
   const ordenado = [...dadosCanal].sort((a, b) =>
     numeroSeguro(b[percCampo]) - numeroSeguro(a[percCampo])
   );
@@ -175,7 +187,7 @@ function renderCanal(containerId, canalNome, metaCampo, realCampo, percCampo, da
 
         <div class="barra" style="margin-top:6px;">
           <div class="barra-preenchida ${classePercentual(item[percCampo])}"
-               style="width:${percentualNumero}%;">
+               style="width:${percentualNumero}%; transition: width 0.5s;">
           </div>
         </div>
       </div>
@@ -253,4 +265,3 @@ async function iniciarPainel() {
 
 iniciarPainel();
 setInterval(iniciarPainel, 300000);
-
