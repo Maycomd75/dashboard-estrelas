@@ -35,7 +35,7 @@ body {
 
 .top-header {
   background: linear-gradient(90deg, var(--azul-1), var(--azul-2));
-  padding: 15px 25px;
+  padding: 10px 20px;
   border-radius: 14px;
   margin-bottom: 18px;
   color: white;
@@ -262,6 +262,7 @@ html, body {
 .container {
   max-width: 100%;
 }
+
 
 
 
